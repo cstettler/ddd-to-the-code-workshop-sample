@@ -1,0 +1,15 @@
+= Architecture Governance for Bike Sharing System
+
+This document describes the architecture constraints for the implementaton of the bike sharing system according to the
+concepts of the onion architecture. It contains the various concepts and constraints to be applied to and checked
+against the code base using jQAssistant.
+
+include::concepts.adoc[]
+
+include::constraints.adoc[]
+
+include::reports.adoc[]
+
+== Summary
+
+include::jQA:Summary[]

@@ -1,0 +1,20 @@
+== Reports
+
+[[dddttc:StereotypesUsageReport.graphml]]
+.Report showing all dependencies between stereotypes (GraphML)
+[source,cypher,role=concept,requiresConcepts="dddttc:StereotypeConcept"]
+----
+    MATCH (m:Stereotype)-[d:DEPENDS_ON]->(n:Stereotype)
+    RETURN m, d, n
+----
+
+
+[[dddttc:StereotypesUsageReport]]
+.Report showing all dependencies between stereotypes (PlantUML)
+[source,cypher,role=concept,requiresConcepts="dddttc:*Concept",reportType="plantuml-component-diagram"]
+----
+    MATCH (m:Stereotype)-[d:DEPENDS_ON]->(n:Stereotype)
+    RETURN m, d, n
+----
+
+(more reports to follow)

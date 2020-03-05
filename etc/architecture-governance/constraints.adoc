@@ -1,0 +1,39 @@
+== Constraints
+
+[[dddttc:onion]]
+[role=group,includesConstraints="dddttc:*"]
+
+The following constraints are enforced in the code base:
+
+
+=== C1 - Aggregates must reside in Domain Ring
+
+As aggregates contain business logic and related state, and only the domain ring must contain business logic, aggregates
+must reside in the domain ring.
+
+_jQAssistant Constraint Definition_
+[[dddttc:AggregateMustResideInDomainRingConstraint]]
+.Aggregates must reside in the domain ring.
+[source,cypher,role=constraint,requiresConcepts="dddttc:AggregateConcept,dddttc:DomainRingConcept"]
+----
+    MATCH  (a:Aggregate)
+WHERE NOT  a:DomainRing
+   RETURN  a.fqn AS Aggregate
+----
+
+
+=== C2 - Aggregates must not use Application Services
+
+As application services represent the boundary of the domain towards external contexts, aggregates must not invoke
+application services.
+
+_jQAssistant Constraint Definition_
+[[dddttc:AggregatesMustNotUseApplicationServicesConstraint]]
+.Aggregates must not use application services.
+[source,cypher,role=constraint,requiresConcepts="dddttc:AggregateConcept,dddttc:ApplicationServiceConcept"]
+----
+    MATCH  (a:Aggregate)-[:DEPENDS_ON]->(s:ApplicationService)
+   RETURN  a.fqn AS Aggregate, s.fqn AS ApplicationService
+----
+
+(more constraints to follow)
