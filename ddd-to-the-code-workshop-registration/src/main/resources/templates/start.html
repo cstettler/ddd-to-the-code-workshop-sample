@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Registration</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/layout.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <span class="navbar-brand">Registration</span>
+        </nav>
+
+        <main class="container">
+            <h3>Start User Registration</h3>
+
+            <div class="alert alert-danger" data-th-text="${error}" data-th-if="${error}"></div>
+
+            <form action="/user-registration/start" method="post">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="user-handle">User Handle</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="user-handle" name="user-handle" data-th-value="${userHandle}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="phone-number">Phone Number</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="phone-number" name="phone-number" data-th-value="${phoneNumber}" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Next &gt;</button>
+            </form>
+        </main>
+
+    </body>
+</html>
