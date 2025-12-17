@@ -1,0 +1,9 @@
+CREATE TABLE user (
+  id VARCHAR PRIMARY KEY,
+  data TEXT
+);
+
+CREATE TABLE booking (
+  id VARCHAR PRIMARY KEY,
+  data TEXT
+);

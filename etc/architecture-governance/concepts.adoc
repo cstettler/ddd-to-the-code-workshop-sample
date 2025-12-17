@@ -1,0 +1,108 @@
+== Concepts
+
+The following concepts are defined based on the stereotypes from `ddd-to-the-code-workshop-stereotype`:
+
+
+=== Onion Architecture
+
+==== Domain Ring (Domain Model and Domain Services)
+
+The domain ring represents the two most inner rings of an onion architecture (domain model and domain services). It
+contains all elements that represent the business logic of the domain.
+
+_jQAssistant Concept Definition_
+[[dddttc:DomainRingConcept]]
+.All classes and sub-packages within a package `domain` are part of the domain ring.
+[source,cypher,role=concept]
+----
+ MATCH     (t:Type)<-[:CONTAINS]-(p:Package)
+ WHERE     p.fqn CONTAINS '.domain'
+   SET     p:DomainRing
+   SET     t:DomainRing
+RETURN     DISTINCT p.fqn AS PackagesInDomainRing
+----
+
+==== Application Services Ring
+
+The application services ring represents the ring of an onion architecture containing code that allows access to the
+business logic of the domain via specific use cases.
+
+_jQAssistant Concept Definition_
+[[dddttc:ApplicationServicesRingConcept]]
+.All classes and sub-packages within a package `application` are part of the application services ring.
+[source,cypher,role=concept]
+----
+ MATCH     (t:Type)<-[:CONTAINS]-(p:Package)
+ WHERE     p.fqn CONTAINS '.application'
+   SET     p:ApplicationServicesRing
+   SET     t:ApplicationServicesRing
+RETURN     DISTINCT p.fqn AS PackagesInApplicationServicesRing
+----
+
+==== Infrastructure Ring
+
+The infrastructure ring represents the ring of an onion architecture containing all infrastructure-related code.
+
+_jQAssistant Concept Definition_
+[[dddttc:InfrastructureRingConcept]]
+.All classes and sub-packages within a package `infrastructure` are part of the infrastructure ring.
+[source,cypher,role=concept]
+----
+ MATCH     (t:Type)<-[:CONTAINS]-(p:Package)
+ WHERE     p.fqn CONTAINS '.infrastructure'
+   SET     p:InfrastructureRing
+   SET     t:InfrastructureRing
+RETURN     DISTINCT p.fqn AS PackagesInInfrastructureRing
+----
+
+
+=== Stereotypes
+
+All code in the onion architecture (at least within the domain and application services ring) is identified by exactly
+one stereotype. Each stereotype represents a concept with defined semantics in the context of Domain-Driven Design.
+
+_jQAssistant Concept Definition_
+[[dddttc:StereotypeConcept]]
+.Every class annotated by an annotation from package `com.github.cstettler.dddttc.stereotype` is a stereotype.
+[source,cypher,role=concept]
+----
+ MATCH     (t:Type)-[:ANNOTATED_BY]->()-[:OF_TYPE]->(a:Type)
+ WHERE     a.fqn STARTS WITH "com.github.cstettler.dddttc.stereotype."
+   SET     t:Stereotype
+RETURN     DISTINCT t.fqn AS Stereotypes
+----
+
+==== Aggregate
+
+An aggregate represents a main concept of the domain model. It encapsulates domain logic and related state and is
+responsible for enforcing business invariants. Aggregates are part of the domain ring.
+
+_jQAssistant Concept Definition_
+[[dddttc:AggregateConcept]]
+.Every class annotated by `com.github.cstettler.dddttc.stereotype.Aggregate` is an aggregate.
+[source,cypher,role=concept]
+----
+ MATCH     (t:Type)-[:ANNOTATED_BY]->()-[:OF_TYPE]->(a:Type)
+ WHERE     a.fqn = "com.github.cstettler.dddttc.stereotype.Aggregate"
+   SET     t:Aggregate
+RETURN     DISTINCT t.fqn AS Aggregates
+----
+
+
+==== Application Service
+
+An application service represents the boundary between the infrastructure / external context and the domain. It provides
+access to the business logic of the domain by orchestrating use cases, but does not implement business logic itself.
+
+_jQAssistant Concept Definition_
+[[dddttc:ApplicationServiceConcept]]
+.Every class annotated by `com.github.cstettler.dddttc.stereotype.ApplicationService` is an application service.
+[source,cypher,role=concept]
+----
+ MATCH     (t:Type)-[:ANNOTATED_BY]->()-[:OF_TYPE]->(a:Type)
+ WHERE     a.fqn = "com.github.cstettler.dddttc.stereotype.ApplicationService"
+   SET     t:ApplicationService
+RETURN     DISTINCT t.fqn AS ApplicationServices
+----
+
+(more concepts to follow)
